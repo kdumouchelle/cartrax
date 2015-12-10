@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Welcome to CarTrax</h1>
+    <a href="/logout">Logout</a>
+    <div class="add-item">
+        <table>
+            <tr>
+                <form action="{{ url_for('new_item') }}" method="post">
+                    <td>
+                        <label>Maintenance Type:</label>
+                        <select name="maintenance_type">
+                            <option value="Tires">Tires</option>
+                            <option value="Brakes">Brakes</option>
+                            <option value="Headlights">Headlights</option>
+                            <option value="Battery">Battery</option>
+                            <option value="Engine Oil">Engine Oil</option>
+                            <option value="Coolant">Coolant</option>
+                            <option value="Timing Belt">Timing Belt</option>
+                            <option value="Air Filter">Air Filter</option>
+                            <option value="Battery">Battery</option>
+                            <option value="Spark Plug">Spark Plug</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label>Date (mm/dd/yyyy):</label>
+                        <input name="date" type="text">
+                    </td>
+                    <td>
+                        <label>Miles:</label>
+                        <input name="odometer" type="number">
+                    </td>
+                    <td>
+                        &nbsp;
+                        &nbsp;
+                        <input class="button" type="submit" value="Save">
+                    </td>
+                </form>
+            </tr>
+        </table>
+    </div>
+    <div class="search">
+        <table>
+            <form action="{{ url_for('search') }}" method="post">
+                    <td>
+                        <label>Maintenance Type:</label>
+                        <select name="maintenance_type">
+                            <option value="Tires">Tires</option>
+                            <option value="Brakes">Brakes</option>
+                            <option value="Headlights">Headlights</option>
+                            <option value="Battery">Battery</option>
+                            <option value="Engine Oil">Engine Oil</option>
+                            <option value="Coolant">Coolant</option>
+                            <option value="Timing Belt">Timing Belt</option>
+                            <option value="Air Filter">Air Filter</option>
+                            <option value="Battery">Battery</option>
+                            <option value="Spark Plug">Spark Plug</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label>Minimum miles:</label>
+                        <input name="start_miles" type="number" size="10">
+                    </td>
+                    <td>
+                        <label>Maximum miles:</label>
+                        <input name="end_miles" type="number">
+                    </td>
+                    <td>
+                        &nbsp;
+                        &nbsp;
+                        <input class="button" type="submit" value="Search">
+                    </td>
+                </form>
+        </table>
+    </div>
+    <div class="entries">
+        <br><br>
+        <h2>Unresolved maintenance:</h2>
+        <div class="datagrid">
+            <table>
+                <thead>
+                <tr>
+                    <th width="300px"><strong>Maintenance Type</strong></th>
+                    <th width="100px"><strong>Date</strong></th>
+                    <th width="100px"><strong>Miles</strong></th>
+                    <th><strong>Actions</strong></th>
+                </tr>
+                </thead>
+                {% for item in open_items %}
+                    <tr>
+                        <td width="300px">{{ item.maintenance_type }}</td>
+                        <td width="100px">{{ item.date }}</td>
+                        <td width="100px">{{ item.odometer }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_entry', item_id=item.item_id) }}">Delete</a>
+                            <a href="{{ url_for('complete', item_id=item.item_id) }}">Mark as Complete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="entries">
+        <h2>Resolved maintenance:</h2>
+        <div class="datagrid">
+            <table>
+                <thead>
+                <tr>
+                    <th width="300px"><strong>Maintenance Type</strong></th>
+                    <th width="100px"><strong>Date</strong></th>
+                    <th width="100px"><strong>Miles</strong></th>
+                    <th><strong>Actions</strong></th>
+                </tr>
+                </thead>
+                {% for item in closed_items %}
+                    <tr>
+                        <td width="300px">{{ item.maintenance_type }}</td>
+                        <td width="100px">{{ item.date }}</td>
+                        <td width="100px">{{ item.odometer }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_entry', item_id=item.item_id) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
